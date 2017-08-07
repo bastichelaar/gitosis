@@ -15,11 +15,12 @@ from gitosis import gitdaemon
 from gitosis import app
 from gitosis import util
 
-def post_update(cfg):
-    git_dir = os.environ.get('GIT_DIR')
-    if git_dir is None:
-        log.error('Must have GIT_DIR set in enviroment')
-        sys.exit(1)
+def post_update(cfg, git_dir=None):
+    if not git_dir:
+        git_dir = os.environ.get('GIT_DIR')
+        if git_dir is None:
+            log.error('Must have GIT_DIR set in enviroment')
+            sys.exit(1)
 
     export = os.path.join(git_dir, 'gitosis-export')
     try:
