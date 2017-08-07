@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 from gitosis import util
+from pkg_resources import resource_filename
 
 class GitError(Exception):
     """git failed"""

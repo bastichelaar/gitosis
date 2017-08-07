@@ -15,7 +15,12 @@ from gitosis import gitdaemon
 from gitosis import app
 from gitosis import util
 
-def post_update(cfg, git_dir):
+def post_update(cfg):
+    git_dir = os.environ.get('GIT_DIR')
+    if git_dir is None:
+        log.error('Must have GIT_DIR set in enviroment')
+        sys.exit(1)
+
     export = os.path.join(git_dir, 'gitosis-export')
     try:
         shutil.rmtree(export)
@@ -48,6 +53,13 @@ def post_update(cfg, git_dir):
         keydir=os.path.join(export, 'keydir'),
         )
 
+def regenerate_keys(cfg):
+    authorized_keys = util.getSSHAuthorizedKeysPath(config=cfg)
+    ssh.writeAuthorizedKeys(
+        path=authorized_keys,
+        keydir=cfg.get('gitosis', 'keydir'),
+        )
+
 class Main(app.App):
     def create_parser(self):
         parser = super(Main, self).create_parser()
@@ -65,14 +77,13 @@ class Main(app.App):
         log = logging.getLogger('gitosis.run_hook')
         os.umask(0022)
 
-        git_dir = os.environ.get('GIT_DIR')
-        if git_dir is None:
-            log.error('Must have GIT_DIR set in enviroment')
-            sys.exit(1)
-
         if hook == 'post-update':
             log.info('Running hook %s', hook)
-            post_update(cfg, git_dir)
+            post_update(cfg)
+            log.info('Done.')
+        elif hook == 'regenerate_keys':
+            log.info('Running hook %s', hook)
+            regenerate_keys(cfg)
             log.info('Done.')
         else:
             log.warning('Ignoring unknown hook: %r', hook)

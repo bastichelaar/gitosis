@@ -78,10 +78,13 @@ class App(object):
         finally:
             conffile.close()
 
-        if "configdir" in cfg.options("gitosis"):
-            configdir = cfg.get("gitosis", "configdir")
-            configfiles = [os.path.join(configdir, f) for f in os.listdir(configdir) if os.path.isfile(os.path.join(configdir, f))]
-            cfg.read(configfiles)
+        try:
+            configdir = config.get('gitosis', 'configdir')
+        except (NoSectionError, NoOptionError):
+            return
+
+        configfiles = [os.path.join(configdir, f) for f in os.listdir(configdir) if os.path.isfile(os.path.join(configdir, f))]
+        cfg.read(configfiles)
 
     def setup_logging(self, cfg):
         try:
