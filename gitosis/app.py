@@ -81,7 +81,7 @@ class App(object):
             conffile.close()
 
         try:
-            configdir = config.get('gitosis', 'configdir')
+            configdir = cfg.get('gitosis', 'configdir')
         except (NoSectionError, NoOptionError):
             return
 
