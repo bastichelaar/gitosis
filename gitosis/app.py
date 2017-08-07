@@ -34,6 +34,13 @@ class App(object):
         except CannotReadConfigError, e:
             log.error(str(e))
             sys.exit(1)
+
+        # dump entire config file
+        for section in cfg.sections():
+            print section
+            for option in cfg.options(section):
+                print " ", option, "=", cfg.get(section, option)
+
         self.setup_logging(cfg)
         self.handle_args(parser, cfg, options, args)
 
@@ -70,6 +77,11 @@ class App(object):
             cfg.readfp(conffile)
         finally:
             conffile.close()
+
+        if "configdir" in cfg.options("gitosis"):
+            configdir = cfg.get("gitosis", "configdir")
+            configfiles = [os.path.join(configdir, f) for f in os.listdir(configdir) if os.path.isfile(os.path.join(configdir, f))]
+            cfg.read(configfiles)
 
     def setup_logging(self, cfg):
         try:

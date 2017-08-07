@@ -36,6 +36,9 @@ def init(
     if _git is None:
         _git = 'git'
 
+    if template is None:
+        template = resource_filename('gitosis.templates', 'default')
+
     util.mkdir(path, 0750)
     args = [
         _git,
@@ -43,8 +46,14 @@ def init(
         'init',
         '--quiet',
         ]
-    if template is not None:
+
+    hooks = []
+    if template:
         args.append('--template=%s' % template)
+        template_hooks_dir = os.path.join(template, 'hooks')
+        if os.path.isdir(template_hooks_dir):
+            hooks = os.listdir(template_hooks_dir)
+
     returncode = subprocess.call(
         args=args,
         cwd=path,
