@@ -5,6 +5,8 @@ import optparse
 import errno
 import ConfigParser
 
+from ConfigParser import NoSectionError, NoOptionError
+
 log = logging.getLogger('gitosis.app')
 
 class CannotReadConfigError(Exception):
@@ -83,7 +85,9 @@ class App(object):
         except (NoSectionError, NoOptionError):
             return
 
-        configfiles = [os.path.join(configdir, f) for f in os.listdir(configdir) if os.path.isfile(os.path.join(configdir, f))]
+        configfiles = [os.path.join(
+            configdir, f) for f in os.listdir(configdir)
+            if os.path.isfile(os.path.join(configdir, f))]
         cfg.read(configfiles)
 
     def setup_logging(self, cfg):
