@@ -36,6 +36,7 @@ class App(object):
         except CannotReadConfigError, e:
             log.error(str(e))
             sys.exit(1)
+        self.read_keydir(options, cfg)
 
         # dump entire config file
         for section in cfg.sections():
@@ -80,15 +81,26 @@ class App(object):
         finally:
             conffile.close()
 
+    def read_keydir(self, options, cfg):
         try:
-            configdir = cfg.get('gitosis', 'configdir')
+            keydir = cfg.get('gitosis', 'keydir')
         except (NoSectionError, NoOptionError):
             return
 
-        configfiles = [os.path.join(
-            configdir, f) for f in os.listdir(configdir)
-            if os.path.isfile(os.path.join(configdir, f))]
-        cfg.read(configfiles)
+        slugs = [d for d in os.listdir(keydir)
+            if os.path.isdir(os.path.join(keydir, d))]
+
+        for slug in slugs:
+            section = "group %s" % slug
+            cfg.add_section(section)
+            slugdir = os.path.join(keydir, slug)
+            keys = [os.path.splitext(os.path.basename(f))[0] for f in os.listdir(slugdir)
+                if os.path.isfile(os.path.join(slugdir, f))]
+            for key in keys:
+                cfg.set(section, "members", " ".join(keys))
+            cfg.set(section, "writable", slug)
+
+        #cfg.read(configfiles)
 
     def setup_logging(self, cfg):
         try:
