@@ -134,15 +134,15 @@ class Main(app.App):
         log.info('Creating repository structure...')
         repositories = util.getRepositoryDir(cfg)
         util.mkdir(repositories)
-        admin_repository = os.path.join(repositories, 'gitosis-admin.git')
-        init_admin_repository(
-            git_dir=admin_repository,
-            pubkey=pubkey,
-            user=user,
-            )
-        log.info('Running post-update hook...')
-        util.mkdir(os.path.expanduser('~/.ssh'), 0700)
-        run_hook.post_update(cfg=cfg, git_dir=admin_repository)
-        log.info('Symlinking ~/.gitosis.conf to repository...')
-        symlink_config(git_dir=admin_repository)
+        #admin_repository = os.path.join(repositories, 'gitosis-admin.git')
+        #init_admin_repository(
+        #    git_dir=admin_repository,
+        #    pubkey=pubkey,
+        #    user=user,
+        #    )
+        #log.info('Running post-update hook...')
+        #util.mkdir(os.path.expanduser('~/.ssh'), 0700)
+        #run_hook.post_update(cfg=cfg, git_dir=admin_repository)
+        #log.info('Symlinking ~/.gitosis.conf to repository...')
+        #symlink_config(git_dir=admin_repository)
         log.info('Done.')
