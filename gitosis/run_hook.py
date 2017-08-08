@@ -22,7 +22,7 @@ def post_update(cfg, git_dir=None):
             log.error('Must have GIT_DIR set in enviroment')
             sys.exit(1)
 
-    export = os.path.join(git_dir, 'gitosis-export')
+    export = os.path.join(git_dir, 'export')
     try:
         shutil.rmtree(export)
     except OSError, e:
@@ -31,28 +31,6 @@ def post_update(cfg, git_dir=None):
         else:
             raise
     repository.export(git_dir=git_dir, path=export)
-    os.rename(
-        os.path.join(export, 'gitosis.conf'),
-        os.path.join(export, '..', 'gitosis.conf'),
-        )
-    # re-read config to get up-to-date settings
-    cfg.read(os.path.join(export, '..', 'gitosis.conf'))
-    gitweb.set_descriptions(
-        config=cfg,
-        )
-    generated = util.getGeneratedFilesDir(config=cfg)
-    gitweb.generate_project_list(
-        config=cfg,
-        path=os.path.join(generated, 'projects.list'),
-        )
-    gitdaemon.set_export_ok(
-        config=cfg,
-        )
-    authorized_keys = util.getSSHAuthorizedKeysPath(config=cfg)
-    ssh.writeAuthorizedKeys(
-        path=authorized_keys,
-        keydir=os.path.join(export, 'keydir'),
-        )
 
 def regenerate_keys(cfg):
     authorized_keys = util.getSSHAuthorizedKeysPath(config=cfg)
@@ -82,7 +60,7 @@ class Main(app.App):
             log.info('Running hook %s', hook)
             post_update(cfg)
             log.info('Done.')
-        elif hook == 'regenerate_keys':
+        elif hook == 'regenerate-keys':
             log.info('Running hook %s', hook)
             regenerate_keys(cfg)
             log.info('Done.')
