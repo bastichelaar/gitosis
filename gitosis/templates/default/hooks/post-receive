@@ -1,3 +1,3 @@
 #!/bin/sh
 echo "This is the post-receive hook"
-gitosis-run-hook post_update
+gitosis-run-hook post-update
