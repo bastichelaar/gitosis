@@ -38,12 +38,6 @@ class App(object):
             sys.exit(1)
         self.read_keydir(options, cfg)
 
-        # dump entire config file
-        for section in cfg.sections():
-            print section
-            for option in cfg.options(section):
-                print " ", option, "=", cfg.get(section, option)
-
         self.setup_logging(cfg)
         self.handle_args(parser, cfg, options, args)
 
