@@ -45,7 +45,6 @@ def init(
         _git,
         '--git-dir=.',
         'init',
-        '--quiet',
         ]
 
     hooks = []
@@ -64,6 +63,15 @@ def init(
     if returncode != 0:
         raise GitInitError('exit status %d' % returncode)
 
+    hooks_dir = os.path.join(path, 'hooks')
+    if not os.path.exists(hooks_dir):
+        hooks_dir = os.path.join(path, '.git', 'hooks')
+    if not os.path.exists(hooks_dir):
+        raise
+    for hook in hooks:
+        os.chmod(
+            os.path.join(hooks_dir, hook),
+            0755)
 
 class GitFastImportError(GitError):
     """git fast-import failed"""
