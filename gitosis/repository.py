@@ -148,7 +148,7 @@ class GitCheckoutIndexError(GitExportError):
 
 def export(git_dir, path):
     try:
-        os.mkdir(path)
+        os.makedirs(path)
     except OSError, e:
         if e.errno == errno.EEXIST:
             pass
