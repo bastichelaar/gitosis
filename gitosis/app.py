@@ -102,7 +102,7 @@ class App(object):
             section = "group %s" % slug
             cfg.add_section(section)
             cfg.set(section, "members", " ".join(slugs[slug]))
-            cfg.set(section, "writable", " ".join(slugs[slug]))
+            cfg.set(section, "writable", " ".join(slug))
 
 
     def setup_logging(self, cfg):
