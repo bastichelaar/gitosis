@@ -81,18 +81,26 @@ class App(object):
         except (NoSectionError, NoOptionError):
             return
 
-        slugs = [d for d in os.listdir(keydir)
-            if os.path.isdir(os.path.join(keydir, d))]
+        #slugs = [d for d in os.listdir(keydir)
+        #    if os.path.isdir(os.path.join(keydir, d))]
+
+        #for slug in slugs:
+        #    section = "group %s" % slug
+        #    cfg.add_section(section)
+        slugs ={}
+        keys = [os.path.splitext(os.path.basename(f))[0] for f in os.listdir(keydir)
+            if os.path.isfile(os.path.join(keydir, f))]
+        for key in keys:
+            slug, member = key.split(".")
+            if slug not in slugs:
+                slugs[slug] = []
+            slugs[slug].append(member)
 
         for slug in slugs:
             section = "group %s" % slug
             cfg.add_section(section)
-            slugdir = os.path.join(keydir, slug)
-            keys = [os.path.splitext(os.path.basename(f))[0] for f in os.listdir(slugdir)
-                if os.path.isfile(os.path.join(slugdir, f))]
-            for key in keys:
-                cfg.set(section, "members", " ".join(keys))
-            cfg.set(section, "writable", slug)
+            cfg.set(section, "members", " ".join(slug.items))
+            cfg.set(section, "writable", " ".join(slug.items))
 
         #cfg.read(configfiles)
 
