@@ -81,12 +81,6 @@ class App(object):
         except (NoSectionError, NoOptionError):
             return
 
-        #slugs = [d for d in os.listdir(keydir)
-        #    if os.path.isdir(os.path.join(keydir, d))]
-
-        #for slug in slugs:
-        #    section = "group %s" % slug
-        #    cfg.add_section(section)
         slugs ={}
         keys = [os.path.splitext(os.path.basename(f))[0] for f in os.listdir(keydir)
             if os.path.isfile(os.path.join(keydir, f))]
@@ -102,7 +96,6 @@ class App(object):
             cfg.set(section, "members", " ".join(slugs[slug]))
             cfg.set(section, "writable", " ".join(slugs[slug]))
 
-        #cfg.read(configfiles)
 
     def setup_logging(self, cfg):
         try:

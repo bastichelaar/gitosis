@@ -63,8 +63,6 @@ def serve(
     if '\n' in command:
         raise CommandMayNotContainNewlineError()
 
-    print cfg, user, command
-
     try:
         verb, args = command.split(None, 1)
     except ValueError:
