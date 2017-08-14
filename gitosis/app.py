@@ -39,12 +39,6 @@ class App(object):
         self.read_keydir(options, cfg)
 
         self.setup_logging(cfg)
-        # dump entire config file
-        for section in cfg.sections():
-            log.debug(section)
-            for option in cfg.options(section):
-                log.debug("%s = %s " % (option, cfg.get(section, option)))
-
         self.handle_args(parser, cfg, options, args)
 
     def setup_basic_logging(self):

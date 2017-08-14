@@ -30,7 +30,7 @@ def post_update(cfg, git_dir=None):
             pass
         else:
             raise
-    repository.export(git_dir=git_dir, path=export)
+    repository.export(git_dir=git_dir, path=os.path.join(export, "track"))
 
 def regenerate_keys(cfg):
     authorized_keys = util.getSSHAuthorizedKeysPath(config=cfg)
