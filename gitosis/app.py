@@ -42,10 +42,8 @@ class App(object):
         # dump entire config file
         for section in cfg.sections():
             log.debug(section)
-            print section
             for option in cfg.options(section):
-                log.debug(" ", option, "=", cfg.get(section, option) )
-                print " ", option, "=", cfg.get(section, option)
+                log.debug("%s = %s " % (option, cfg.get(section, option)))
 
         self.handle_args(parser, cfg, options, args)
 
