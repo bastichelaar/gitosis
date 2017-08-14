@@ -38,7 +38,7 @@ def init(
         _git = 'git'
 
     if template is None:
-        template = resource_filename('gitosis.templates', 'default')
+        template = '/git/template'
 
     util.mkdir(path, 0750)
     args = [
