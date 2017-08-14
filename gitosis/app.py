@@ -38,13 +38,15 @@ class App(object):
             sys.exit(1)
         self.read_keydir(options, cfg)
 
+        self.setup_logging(cfg)
         # dump entire config file
         for section in cfg.sections():
             log.debug(section)
+            print section
             for option in cfg.options(section):
                 log.debug(" ", option, "=", cfg.get(section, option) )
+                print " ", option, "=", cfg.get(section, option)
 
-        self.setup_logging(cfg)
         self.handle_args(parser, cfg, options, args)
 
     def setup_basic_logging(self):
