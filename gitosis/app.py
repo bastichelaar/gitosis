@@ -40,9 +40,9 @@ class App(object):
 
         # dump entire config file
         for section in cfg.sections():
-            main_log.debug(section)
+            log.debug(section)
             for option in cfg.options(section):
-                main_log.debug(" ", option, "=", cfg.get(section, option) )
+                log.debug(" ", option, "=", cfg.get(section, option) )
 
         self.setup_logging(cfg)
         self.handle_args(parser, cfg, options, args)
