@@ -99,8 +99,8 @@ class App(object):
         for slug in slugs:
             section = "group %s" % slug
             cfg.add_section(section)
-            cfg.set(section, "members", " ".join(slug.items))
-            cfg.set(section, "writable", " ".join(slug.items))
+            cfg.set(section, "members", " ".join(slugs[slug]))
+            cfg.set(section, "writable", " ".join(slugs[slug]))
 
         #cfg.read(configfiles)
 
